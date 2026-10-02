@@ -1,0 +1,3510 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sağlık Takip Sistemi V2.3</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#263238;
+}
+
+button,input{font:inherit}
+button{cursor:pointer}
+
+.app{
+    max-width:1200px;
+    margin:auto;
+    min-height:100vh;
+    padding-bottom:85px;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    background:linear-gradient(135deg,#1976d2,#42a5f5);
+    color:white;
+    padding:22px 18px;
+    border-radius:0 0 22px 22px;
+    box-shadow:0 3px 12px rgba(0,0,0,.12);
+}
+
+.header h1{
+    margin:0;
+    font-size:25px;
+}
+
+.header p{
+    margin:7px 0 0;
+    opacity:.9;
+    font-size:14px;
+}
+
+/* ================= PAGES ================= */
+
+.page{
+    display:none;
+    padding:20px;
+}
+
+.page.active{display:block}
+
+/* ================= HOME ================= */
+
+.welcome{
+    background:white;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    margin-bottom:18px;
+}
+
+.welcome h2{margin-top:0}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.menu-card{
+    border:none;
+    border-radius:18px;
+    padding:25px 15px;
+    min-height:135px;
+    color:white;
+    text-align:left;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+    transition:transform .15s;
+}
+
+.menu-card:hover{
+    transform:translateY(-2px);
+}
+
+.menu-card .icon{
+    font-size:35px;
+    display:block;
+    margin-bottom:12px;
+}
+
+.menu-card strong{font-size:18px}
+
+.menu-card small{
+    display:block;
+    margin-top:7px;
+    opacity:.9;
+}
+
+.blue{background:linear-gradient(135deg,#1565c0,#42a5f5)}
+.red{background:linear-gradient(135deg,#c62828,#ef5350)}
+.green{background:linear-gradient(135deg,#2e7d32,#66bb6a)}
+.orange{background:linear-gradient(135deg,#ef6c00,#ffa726)}
+.purple{background:linear-gradient(135deg,#6a1b9a,#ab47bc)}
+
+/* ================= CARDS ================= */
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.card h2,.card h3{margin-top:0}
+
+/* ================= FORM ================= */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.field label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+.field input{
+    width:100%;
+    padding:12px;
+    border:1px solid #d4dce5;
+    border-radius:10px;
+    outline:none;
+    background:#fff;
+}
+
+.field input:focus{
+    border-color:#2196f3;
+}
+
+.full{grid-column:1/-1}
+
+.primary-btn{
+    width:100%;
+    border:none;
+    background:#1976d2;
+    color:white;
+    padding:13px;
+    border-radius:11px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.primary-btn:hover{background:#1565c0}
+
+.back-btn{
+    border:none;
+    background:#eceff1;
+    color:#37474f;
+    padding:10px 15px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+/* ================= RECORDS ================= */
+
+.record{
+    border:1px solid #e1e7ed;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:10px;
+    background:#fafcff;
+}
+
+.record-head{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    margin-bottom:9px;
+}
+
+.record-date{
+    color:#607d8b;
+    font-size:13px;
+}
+
+.delete-btn{
+    border:none;
+    background:#ffebee;
+    color:#c62828;
+    padding:7px 10px;
+    border-radius:8px;
+}
+
+.record-values{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.value{
+    background:#e3f2fd;
+    padding:7px 10px;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.empty{
+    text-align:center;
+    color:#78909c;
+    padding:20px;
+}
+
+/* ================= REPORT ================= */
+
+.report-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.period-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.period-btn{
+    border:1px solid #bbdefb;
+    background:#e3f2fd;
+    color:#1565c0;
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.period-btn.active{
+    background:#1976d2;
+    color:white;
+}
+
+.report-range{
+    background:#e3f2fd;
+    color:#1565c0;
+    padding:12px;
+    border-radius:10px;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+/* ================= REPORT BUTTONS ================= */
+
+.report-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.report-action{
+    border:none;
+    color:white;
+    padding:11px 16px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.pdf-btn{background:#c62828}
+.print-btn{background:#455a64}
+
+/* ================= SUMMARY ================= */
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+
+.summary-card{
+    background:#fff;
+    border-radius:15px;
+    padding:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+    border-left:5px solid #1976d2;
+}
+
+.summary-card.red-border{border-left-color:#e53935}
+.summary-card.green-border{border-left-color:#43a047}
+
+.summary-card .summary-icon{font-size:28px}
+
+.summary-card .summary-number{
+    font-size:26px;
+    font-weight:bold;
+    margin-top:7px;
+}
+
+.summary-card small{color:#607d8b}
+
+/* ================= DETAIL ================= */
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:18px;
+}
+
+.detail-card{
+    background:white;
+    border-radius:17px;
+    padding:18px;
+    box-shadow:0 2px 9px rgba(0,0,0,.06);
+}
+
+.detail-card h3{margin-top:0}
+
+.detail-line{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid #edf1f4;
+}
+
+.detail-line:last-child{border-bottom:none}
+
+/* ================= CHART ================= */
+
+.chart-card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    margin-top:18px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.chart-card h3{margin-top:0}
+
+.chart-box{
+    width:100%;
+    height:300px;
+    position:relative;
+}
+
+.chart-box canvas{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.chart-info{
+    color:#78909c;
+    font-size:13px;
+    margin-top:8px;
+}
+
+/* ================= LATEST ================= */
+
+.latest-list{margin-top:18px}
+
+.latest-item{
+    padding:10px 0;
+    border-bottom:1px solid #edf1f4;
+}
+
+.latest-item:last-child{border-bottom:none}
+
+.latest-date{
+    font-size:12px;
+    color:#78909c;
+    margin-bottom:4px;
+}
+
+/* ================= NOTICE ================= */
+
+.notice{
+    padding:12px 14px;
+    border-radius:10px;
+    margin-bottom:15px;
+    background:#fff8e1;
+    color:#795548;
+    font-size:14px;
+}
+
+/* ================= BOTTOM ================= */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(1200px,100%);
+    background:white;
+    box-shadow:0 -3px 15px rgba(0,0,0,.12);
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    z-index:1000;
+}
+
+.nav-btn{
+    border:none;
+    background:white;
+    padding:11px 4px;
+    color:#607d8b;
+    font-size:12px;
+}
+
+.nav-btn span{
+    display:block;
+    font-size:21px;
+    margin-bottom:3px;
+}
+
+.nav-btn.active{
+    color:#1976d2;
+    font-weight:bold;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:750px){
+
+    .page{padding:14px}
+
+    .menu-grid{grid-template-columns:1fr}
+
+    .form-grid{grid-template-columns:1fr}
+
+    .full{grid-column:auto}
+
+    .summary-grid,
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header h1{font-size:21px}
+
+    .nav-btn{font-size:10px}
+
+    .nav-btn span{font-size:19px}
+
+    .period-buttons{width:100%}
+
+    .period-btn{flex:1}
+
+    .chart-box{height:260px}
+
+    .report-actions{
+        flex-direction:column;
+    }
+
+    .report-action{
+        width:100%;
+    }
+}
+
+/* ================= PRINT / PDF ================= */
+
+@media print{
+
+    body{
+        background:white;
+    }
+
+    .header{
+        border-radius:0;
+        box-shadow:none;
+    }
+
+    .bottom-nav,
+    .back-btn,
+    .period-buttons,
+    .report-actions,
+    .notice{
+        display:none !important;
+    }
+
+    .page{
+        display:none !important;
+    }
+
+    #rapor{
+        display:block !important;
+        padding:10px;
+    }
+
+    .card,
+    .chart-card,
+    .detail-card,
+    .summary-card{
+        box-shadow:none;
+        break-inside:avoid;
+    }
+
+    .chart-box{
+        height:280px;
+    }
+
+    .app{
+        max-width:none;
+        padding:0;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+    <h1>❤️ Sağlık Takip Sistemi</h1>
+    <p>V2.3 • 7 / 30 Gün Rapor ve PDF</p>
+</header>
+
+<!-- ================= ANA SAYFA ================= -->
+
+<section id="anasayfa" class="page active">
+
+<div class="welcome">
+    <h2>Sağlık Takibiniz</h2>
+    <p>
+        Tansiyon, kan şekeri, kolesterol ve ilaç kayıtlarınızı
+        düzenli olarak takip edebilirsiniz.
+    </p>
+</div>
+
+<div class="menu-grid">
+
+<button class="menu-card blue" onclick="sayfaAc('tansiyon')">
+    <span class="icon">❤️</span>
+    <strong>Tansiyon</strong>
+    <small>Tansiyon ve nabız kayıtları</small>
+</button>
+
+<button class="menu-card red" onclick="sayfaAc('seker')">
+    <span class="icon">🩸</span>
+    <strong>Kan Şekeri</strong>
+    <small>Şeker ölçümlerinizi kaydedin</small>
+</button>
+
+<button class="menu-card green" onclick="sayfaAc('kolesterol')">
+    <span class="icon">🧪</span>
+    <strong>Kolesterol</strong>
+    <small>Kolesterol ölçümleri</small>
+</button>
+
+<button class="menu-card orange" onclick="sayfaAc('ilac')">
+    <span class="icon">💊</span>
+    <strong>İlaçlar</strong>
+    <small>İlaç listenizi takip edin</small>
+</button>
+
+<button class="menu-card purple" onclick="sayfaAc('rapor')">
+    <span class="icon">📊</span>
+    <strong>7 / 30 Gün Raporu</strong>
+    <small>Ölçümlerinizi grafiklerle görün</small>
+</button>
+
+</div>
+</section>
+
+<!-- ================= TANSİYON ================= -->
+
+<section id="tansiyon" class="page">
+
+<button class="back-btn" onclick="sayfaAc('anasayfa')">
+← Ana Sayfa
+</button>
+
+<div class="card">
+
+<h2>❤️ Tansiyon Kaydı</h2>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Büyük Tansiyon</label>
+<input type="number" id="buyuk" placeholder="Örn. 120">
+</div>
+
+<div class="field">
+<label>Küçük Tansiyon</label>
+<input type="number" id="kucuk" placeholder="Örn. 80">
+</div>
+
+<div class="field">
+<label>Nabız</label>
+<input type="number" id="nabiz" placeholder="Örn. 70">
+</div>
+
+<div class="field">
+<label>Tarih</label>
+<input type="date" id="tansiyonTarih">
+</div>
+
+<div class="field">
+<label>Saat</label>
+<input type="time" id="tansiyonSaat">
+</div>
+
+<div class="field full">
+<button class="primary-btn" onclick="tansiyonKaydet()">
+❤️ Tansiyon Kaydet
+</button>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h3>Kayıtlar</h3>
+<div id="tansiyonListe"></div>
+</div>
+
+</section>
+
+<!-- ================= ŞEKER ================= -->
+
+<section id="seker" class="page">
+
+<button class="back-btn" onclick="sayfaAc('anasayfa')">
+← Ana Sayfa
+</button>
+
+<div class="card">
+
+<h2>🩸 Kan Şekeri Kaydı</h2>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Kan Şekeri</label>
+<input type="number" step="0.1" id="sekerDeger" placeholder="Örn. 105">
+</div>
+
+<div class="field">
+<label>Tarih</label>
+<input type="date" id="sekerTarih">
+</div>
+
+<div class="field">
+<label>Saat</label>
+<input type="time" id="sekerSaat">
+</div>
+
+<div class="field">
+<label>Açlık / Tokluk</label>
+<input type="text" id="sekerDurum" placeholder="Örn. Açlık">
+</div>
+
+<div class="field full">
+<button class="primary-btn" onclick="sekerKaydet()">
+🩸 Kan Şekeri Kaydet
+</button>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h3>Kayıtlar</h3>
+<div id="sekerListe"></div>
+</div>
+
+</section>
+
+<!-- ================= KOLESTEROL ================= -->
+
+<section id="kolesterol" class="page">
+
+<button class="back-btn" onclick="sayfaAc('anasayfa')">
+← Ana Sayfa
+</button>
+
+<div class="card">
+
+<h2>🧪 Kolesterol Kaydı</h2>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Total Kolesterol</label>
+<input type="number" step="0.1" id="total" placeholder="Örn. 190">
+</div>
+
+<div class="field">
+<label>LDL</label>
+<input type="number" step="0.1" id="ldl" placeholder="Örn. 110">
+</div>
+
+<div class="field">
+<label>HDL</label>
+<input type="number" step="0.1" id="hdl" placeholder="Örn. 50">
+</div>
+
+<div class="field">
+<label>Trigliserid</label>
+<input type="number" step="0.1" id="trig" placeholder="Örn. 140">
+</div>
+
+<div class="field">
+<label>Tarih</label>
+<input type="date" id="kolesterolTarih">
+</div>
+
+<div class="field">
+<label>Saat</label>
+<input type="time" id="kolesterolSaat">
+</div>
+
+<div class="field full">
+<button class="primary-btn" onclick="kolesterolKaydet()">
+🧪 Kolesterol Kaydet
+</button>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h3>Kayıtlar</h3>
+<div id="kolesterolListe"></div>
+</div>
+
+</section>
+
+<!-- ================= İLAÇ ================= -->
+
+<section id="ilac" class="page">
+
+<button class="back-btn" onclick="sayfaAc('anasayfa')">
+← Ana Sayfa
+</button>
+
+<div class="card">
+
+<h2>💊 İlaç Kaydı</h2>
+
+<div class="form-grid">
+
+<div class="field">
+<label>İlaç Adı</label>
+<input type="text" id="ilacAdi" placeholder="İlaç adı">
+</div>
+
+<div class="field">
+<label>Doz</label>
+<input type="text" id="ilacDoz" placeholder="Örn. 5 mg">
+</div>
+
+<div class="field">
+<label>Kullanım</label>
+<input type="text" id="ilacKullanim" placeholder="Örn. Sabah 1 adet">
+</div>
+
+<div class="field">
+<label>Açıklama</label>
+<input type="text" id="ilacAciklama" placeholder="İsteğe bağlı">
+</div>
+
+<div class="field full">
+<button class="primary-btn" onclick="ilacKaydet()">
+💊 İlaç Kaydet
+</button>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<h3>İlaçlarım</h3>
+<div id="ilacListe"></div>
+</div>
+
+</section>
+
+<!-- ================= RAPOR ================= -->
+
+<section id="rapor" class="page">
+
+<button class="back-btn" onclick="sayfaAc('anasayfa')">
+← Ana Sayfa
+</button>
+
+<div class="card">
+
+<div class="report-title">
+
+<div>
+<h2>📊 Sağlık Raporu</h2>
+<p style="margin-bottom:0;color:#607d8b;">
+Kayıtlarınızdaki ölçümlerin dönemsel özeti
+</p>
+</div>
+
+<div class="period-buttons">
+
+<button id="btn7"
+class="period-btn active"
+onclick="raporOlustur(7)">
+Son 7 Gün </button>
+
+<button id="btn30"
+class="period-btn"
+onclick="raporOlustur(30)">
+Son 30 Gün </button>
+
+</div>
+</div>
+
+<div id="raporAralik" class="report-range"></div>
+
+<div class="report-actions">
+
+<button class="report-action pdf-btn" onclick="pdfRaporOlustur()">
+📄 PDF Rapor Oluştur
+</button>
+
+<button class="report-action print-btn" onclick="window.print()">
+🖨️ Yazdır
+</button>
+
+</div>
+
+</div>
+
+<div class="notice">
+ℹ️ Bu ekran kaydettiğiniz ölçümlerin sayısal ve grafiksel özetini gösterir.
+Tıbbi tanı veya tedavi değerlendirmesi yapmaz.
+</div>
+
+<!-- ÖZET -->
+
+<div class="summary-grid">
+
+<div class="summary-card">
+<div class="summary-icon">❤️</div>
+<div class="summary-number" id="raporTansiyonSayi">0</div>
+<small>Tansiyon kaydı</small>
+</div>
+
+<div class="summary-card red-border">
+<div class="summary-icon">🩸</div>
+<div class="summary-number" id="raporSekerSayi">0</div>
+<small>Kan şekeri kaydı</small>
+</div>
+
+<div class="summary-card green-border">
+<div class="summary-icon">🧪</div>
+<div class="summary-number" id="raporKolesterolSayi">0</div>
+<small>Kolesterol kaydı</small>
+</div>
+
+</div>
+
+<!-- DETAY -->
+
+<div class="detail-grid">
+
+<div class="detail-card">
+
+<h3>❤️ Tansiyon Özeti</h3>
+
+<div class="detail-line">
+<span>Ortalama büyük</span>
+<strong id="ortBuyuk">-</strong>
+</div>
+
+<div class="detail-line">
+<span>Ortalama küçük</span>
+<strong id="ortKucuk">-</strong>
+</div>
+
+<div class="detail-line">
+<span>Ortalama nabız</span>
+<strong id="ortNabiz">-</strong>
+</div>
+
+<div class="detail-line">
+<span>En yüksek büyük</span>
+<strong id="maxBuyuk">-</strong>
+</div>
+
+<div class="detail-line">
+<span>En düşük büyük</span>
+<strong id="minBuyuk">-</strong>
+</div>
+
+</div>
+
+<div class="detail-card">
+
+<h3>🩸 Kan Şekeri Özeti</h3>
+
+<div class="detail-line">
+<span>Ortalama</span>
+<strong id="ortSeker">-</strong>
+</div>
+
+<div class="detail-line">
+<span>En yüksek</span>
+<strong id="maxSeker">-</strong>
+</div>
+
+<div class="detail-line">
+<span>En düşük</span>
+<strong id="minSeker">-</strong>
+</div>
+
+</div>
+
+<div class="detail-card">
+
+<h3>🧪 Kolesterol Özeti</h3>
+
+<div class="detail-line">
+<span>Ortalama Total</span>
+<strong id="ortTotal">-</strong>
+</div>
+
+<div class="detail-line">
+<span>Ortalama LDL</span>
+<strong id="ortLDL">-</strong>
+</div>
+
+<div class="detail-line">
+<span>Ortalama HDL</span>
+<strong id="ortHDL">-</strong>
+</div>
+
+<div class="detail-line">
+<span>Ortalama Trigliserid</span>
+<strong id="ortTrig">-</strong>
+</div>
+
+</div>
+
+</div>
+
+<!-- GRAFİKLER -->
+
+<div class="chart-card">
+
+<h3>❤️ Tansiyon Grafiği</h3>
+
+<div class="chart-box">
+<canvas id="tansiyonCanvas"></canvas>
+</div>
+
+<div class="chart-info">
+Büyük ve küçük tansiyon kayıtlarının tarih sırasındaki görünümü.
+</div>
+
+</div>
+
+<div class="chart-card">
+
+<h3>🩸 Kan Şekeri Grafiği</h3>
+
+<div class="chart-box">
+<canvas id="sekerCanvas"></canvas>
+</div>
+
+<div class="chart-info">
+Seçilen dönemdeki kan şekeri kayıtları.
+</div>
+
+</div>
+
+<div class="chart-card">
+
+<h3>🧪 Kolesterol Grafiği</h3>
+
+<div class="chart-box">
+<canvas id="kolesterolCanvas"></canvas>
+</div>
+
+<div class="chart-info">
+Total, LDL ve HDL değerlerinin kayıt tarihine göre görünümü.
+</div>
+
+</div>
+
+<!-- SON KAYITLAR -->
+
+<div class="card latest-list">
+
+<h3>📋 Bu Dönemdeki Son Kayıtlar</h3>
+
+<div id="raporSonKayitlar"></div>
+
+</div>
+
+<!-- İLAÇLAR -->
+
+<div class="card">
+
+<h3>💊 Mevcut İlaç Kayıtları</h3>
+
+<div id="raporIlaclar"></div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- ================= ALT MENÜ ================= -->
+
+<nav class="bottom-nav">
+
+<button class="nav-btn active" onclick="sayfaAc('anasayfa')">
+<span>🏠</span>
+Ana Sayfa
+</button>
+
+<button class="nav-btn" onclick="sayfaAc('tansiyon')">
+<span>❤️</span>
+Tansiyon
+</button>
+
+<button class="nav-btn" onclick="sayfaAc('seker')">
+<span>🩸</span>
+Şeker
+</button>
+
+<button class="nav-btn" onclick="sayfaAc('kolesterol')">
+<span>🧪</span>
+Kolesterol
+</button>
+
+<button class="nav-btn" onclick="sayfaAc('rapor')">
+<span>📊</span>
+Rapor
+</button>
+
+</nav>
+
+<script>
+
+/* =========================================================
+   GENEL
+========================================================= */
+
+function $(id){
+    return document.getElementById(id);
+}
+
+function guvenliMetin(metin){
+    return String(metin ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function ikiHane(sayi){
+    return String(sayi).padStart(2,"0");
+}
+
+function bugunISO(){
+    const d=new Date();
+
+    return d.getFullYear()+"-"+
+        ikiHane(d.getMonth()+1)+"-"+
+        ikiHane(d.getDate());
+}
+
+function simdiSaat(){
+    const d=new Date();
+
+    return ikiHane(d.getHours())+":"+
+        ikiHane(d.getMinutes());
+}
+
+function turkTarih(tarih){
+
+    if(!tarih)return "-";
+
+    const p=String(tarih).split("-");
+
+    if(p.length===3){
+        return p[2]+"."+p[1]+"."+p[0];
+    }
+
+    return tarih;
+}
+
+function sayi(deger){
+
+    if(
+        deger===null||
+        deger===undefined||
+        deger===""
+    ){
+        return null;
+    }
+
+    const n=Number(
+        String(deger).replace(",",".")
+    );
+
+    return Number.isFinite(n)?n:null;
+}
+
+function ortalama(dizi){
+
+    const temiz=dizi
+        .map(sayi)
+        .filter(v=>v!==null);
+
+    if(!temiz.length)return null;
+
+    return temiz.reduce(
+        (toplam,deger)=>toplam+deger,
+        0
+    )/temiz.length;
+}
+
+function minimum(dizi){
+
+    const temiz=dizi
+        .map(sayi)
+        .filter(v=>v!==null);
+
+    if(!temiz.length)return null;
+
+    return Math.min(...temiz);
+}
+
+function maksimum(dizi){
+
+    const temiz=dizi
+        .map(sayi)
+        .filter(v=>v!==null);
+
+    if(!temiz.length)return null;
+
+    return Math.max(...temiz);
+}
+
+function formatSayi(deger){
+
+    if(
+        deger===null||
+        deger===undefined||
+        !Number.isFinite(Number(deger))
+    ){
+        return "-";
+    }
+
+    return Number(deger).toLocaleString(
+        "tr-TR",
+        {
+            maximumFractionDigits:1
+        }
+    );
+}
+
+function veriOku(anahtar){
+
+    try{
+        const veri=
+            JSON.parse(
+                localStorage.getItem(anahtar)||"[]"
+            );
+
+        return Array.isArray(veri)?veri:[];
+
+    }catch(e){
+        return [];
+    }
+}
+
+function veriYaz(anahtar,veri){
+
+    localStorage.setItem(
+        anahtar,
+        JSON.stringify(veri)
+    );
+}
+
+/* =========================================================
+   SAYFA
+========================================================= */
+
+function sayfaAc(sayfa){
+
+    document.querySelectorAll(".page")
+    .forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    const hedef=$(sayfa);
+
+    if(hedef){
+        hedef.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-btn")
+    .forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    const navlar=
+        document.querySelectorAll(".nav-btn");
+
+    if(sayfa==="anasayfa")navlar[0]?.classList.add("active");
+    if(sayfa==="tansiyon"){
+        navlar[1]?.classList.add("active");
+        tansiyonListele();
+    }
+
+    if(sayfa==="seker"){
+        navlar[2]?.classList.add("active");
+        sekerListele();
+    }
+
+    if(sayfa==="kolesterol"){
+        navlar[3]?.classList.add("active");
+        kolesterolListele();
+    }
+
+    if(sayfa==="rapor"){
+        navlar[4]?.classList.add("active");
+        raporOlustur(
+            window.aktifRaporGunSayisi||7
+        );
+    }
+
+    if(sayfa==="ilac"){
+        ilacListele();
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+/* =========================================================
+   TARİH SAAT
+========================================================= */
+
+function tarihSaatleriAyarla(){
+
+    if($("tansiyonTarih"))
+        $("tansiyonTarih").value=bugunISO();
+
+    if($("tansiyonSaat"))
+        $("tansiyonSaat").value=simdiSaat();
+
+    if($("sekerTarih"))
+        $("sekerTarih").value=bugunISO();
+
+    if($("sekerSaat"))
+        $("sekerSaat").value=simdiSaat();
+
+    if($("kolesterolTarih"))
+        $("kolesterolTarih").value=bugunISO();
+
+    if($("kolesterolSaat"))
+        $("kolesterolSaat").value=simdiSaat();
+}
+
+/* =========================================================
+   TANSİYON
+========================================================= */
+
+function tansiyonKaydet(){
+
+    const buyuk=$("buyuk").value.trim();
+    const kucuk=$("kucuk").value.trim();
+    const nabiz=$("nabiz").value.trim();
+    const tarih=$("tansiyonTarih").value;
+    const saat=$("tansiyonSaat").value;
+
+    if(!buyuk||!kucuk){
+        alert(
+            "Lütfen büyük ve küçük tansiyon değerlerini girin."
+        );
+        return;
+    }
+
+    const kayitlar=
+        veriOku("saglik_tansiyon");
+
+    kayitlar.push({
+        id:Date.now(),
+        buyuk:buyuk,
+        kucuk:kucuk,
+        nabiz:nabiz,
+        tarih:tarih,
+        saat:saat
+    });
+
+    veriYaz(
+        "saglik_tansiyon",
+        kayitlar
+    );
+
+    $("buyuk").value="";
+    $("kucuk").value="";
+    $("nabiz").value="";
+
+    tansiyonListele();
+
+    alert("Tansiyon kaydı kaydedildi.");
+}
+
+function tansiyonListele(){
+
+    const liste=
+        veriOku("saglik_tansiyon");
+
+    const alan=$("tansiyonListe");
+
+    if(!liste.length){
+        alan.innerHTML=
+            '<div class="empty">Henüz tansiyon kaydı yok.</div>';
+        return;
+    }
+
+    liste.sort((a,b)=>{
+        const aa=
+            String(a.tarih||"")+" "+
+            String(a.saat||"");
+
+        const bb=
+            String(b.tarih||"")+" "+
+            String(b.saat||"");
+
+        return bb.localeCompare(aa);
+    });
+
+    alan.innerHTML=
+        liste.map((k,index)=>{
+
+            const id=k.id??index;
+
+            return `
+            <div class="record">
+
+                <div class="record-head">
+
+                    <div class="record-date">
+                        ${guvenliMetin(turkTarih(k.tarih))}
+                        ${k.saat?" • "+guvenliMetin(k.saat):""}
+                    </div>
+
+                    <button
+                        class="delete-btn"
+                        onclick="tansiyonSil('${String(id)}')">
+                        🗑️ Sil
+                    </button>
+
+                </div>
+
+                <div class="record-values">
+
+                    <span class="value">
+                        Büyük:
+                        <strong>${guvenliMetin(k.buyuk)}</strong>
+                    </span>
+
+                    <span class="value">
+                        Küçük:
+                        <strong>${guvenliMetin(k.kucuk)}</strong>
+                    </span>
+
+                    ${
+                        k.nabiz
+                        ?
+                        `<span class="value">
+                            Nabız:
+                            <strong>${guvenliMetin(k.nabiz)}</strong>
+                        </span>`
+                        :""
+                    }
+
+                </div>
+            </div>
+            `;
+        }).join("");
+}
+
+function tansiyonSil(id){
+
+    if(!confirm("Bu tansiyon kaydı silinsin mi?"))
+        return;
+
+    let liste=
+        veriOku("saglik_tansiyon");
+
+    liste=liste.filter(
+        k=>String(k.id)!==String(id)
+    );
+
+    veriYaz(
+        "saglik_tansiyon",
+        liste
+    );
+
+    tansiyonListele();
+    raporOlustur(
+        window.aktifRaporGunSayisi||7
+    );
+}
+
+/* =========================================================
+   ŞEKER
+========================================================= */
+
+function sekerKaydet(){
+
+    const deger=$("sekerDeger").value.trim();
+    const tarih=$("sekerTarih").value;
+    const saat=$("sekerSaat").value;
+    const durum=$("sekerDurum").value.trim();
+
+    if(!deger){
+        alert("Lütfen kan şekeri değerini girin.");
+        return;
+    }
+
+    const kayitlar=
+        veriOku("saglik_seker");
+
+    kayitlar.push({
+        id:Date.now(),
+        deger:deger,
+        tarih:tarih,
+        saat:saat,
+        durum:durum
+    });
+
+    veriYaz(
+        "saglik_seker",
+        kayitlar
+    );
+
+    $("sekerDeger").value="";
+    $("sekerDurum").value="";
+
+    sekerListele();
+
+    alert("Kan şekeri kaydı kaydedildi.");
+}
+
+function sekerListele(){
+
+    const liste=
+        veriOku("saglik_seker");
+
+    const alan=$("sekerListe");
+
+    if(!liste.length){
+        alan.innerHTML=
+            '<div class="empty">Henüz kan şekeri kaydı yok.</div>';
+        return;
+    }
+
+    liste.sort((a,b)=>{
+        const aa=
+            String(a.tarih||"")+" "+
+            String(a.saat||"");
+
+        const bb=
+            String(b.tarih||"")+" "+
+            String(b.saat||"");
+
+        return bb.localeCompare(aa);
+    });
+
+    alan.innerHTML=
+        liste.map((k,index)=>{
+
+            const id=k.id??index;
+
+            return `
+            <div class="record">
+
+                <div class="record-head">
+
+                    <div class="record-date">
+                        ${guvenliMetin(turkTarih(k.tarih))}
+                        ${k.saat?" • "+guvenliMetin(k.saat):""}
+                    </div>
+
+                    <button
+                        class="delete-btn"
+                        onclick="sekerSil('${String(id)}')">
+                        🗑️ Sil
+                    </button>
+
+                </div>
+
+                <div class="record-values">
+
+                    <span class="value">
+                        Şeker:
+                        <strong>
+                            ${guvenliMetin(
+                                k.deger??k.seker??"-"
+                            )}
+                        </strong>
+                    </span>
+
+                    ${
+                        k.durum
+                        ?
+                        `<span class="value">
+                            ${guvenliMetin(k.durum)}
+                        </span>`
+                        :""
+                    }
+
+                </div>
+            </div>
+            `;
+        }).join("");
+}
+
+function sekerSil(id){
+
+    if(!confirm("Bu kan şekeri kaydı silinsin mi?"))
+        return;
+
+    let liste=
+        veriOku("saglik_seker");
+
+    liste=liste.filter(
+        k=>String(k.id)!==String(id)
+    );
+
+    veriYaz(
+        "saglik_seker",
+        liste
+    );
+
+    sekerListele();
+
+    raporOlustur(
+        window.aktifRaporGunSayisi||7
+    );
+}
+
+/* =========================================================
+   KOLESTEROL
+========================================================= */
+
+function kolesterolKaydet(){
+
+    const total=$("total").value.trim();
+    const ldl=$("ldl").value.trim();
+    const hdl=$("hdl").value.trim();
+    const trig=$("trig").value.trim();
+    const tarih=$("kolesterolTarih").value;
+    const saat=$("kolesterolSaat").value;
+
+    if(!total&&!ldl&&!hdl&&!trig){
+        alert(
+            "Lütfen en az bir kolesterol değeri girin."
+        );
+        return;
+    }
+
+    const kayitlar=
+        veriOku("saglik_kolesterol");
+
+    kayitlar.push({
+        id:Date.now(),
+        total:total,
+        ldl:ldl,
+        hdl:hdl,
+        trig:trig,
+        tarih:tarih,
+        saat:saat
+    });
+
+    veriYaz(
+        "saglik_kolesterol",
+        kayitlar
+    );
+
+    $("total").value="";
+    $("ldl").value="";
+    $("hdl").value="";
+    $("trig").value="";
+
+    kolesterolListele();
+
+    alert("Kolesterol kaydı kaydedildi.");
+}
+
+function kolesterolListele(){
+
+    const liste=
+        veriOku("saglik_kolesterol");
+
+    const alan=$("kolesterolListe");
+
+    if(!liste.length){
+        alan.innerHTML=
+            '<div class="empty">Henüz kolesterol kaydı yok.</div>';
+        return;
+    }
+
+    liste.sort((a,b)=>{
+        const aa=
+            String(a.tarih||"")+" "+
+            String(a.saat||"");
+
+        const bb=
+            String(b.tarih||"")+" "+
+            String(b.saat||"");
+
+        return bb.localeCompare(aa);
+    });
+
+    alan.innerHTML=
+        liste.map((k,index)=>{
+
+            const id=k.id??index;
+
+            return `
+            <div class="record">
+
+                <div class="record-head">
+
+                    <div class="record-date">
+                        ${guvenliMetin(turkTarih(k.tarih))}
+                        ${k.saat?" • "+guvenliMetin(k.saat):""}
+                    </div>
+
+                    <button
+                        class="delete-btn"
+                        onclick="kolesterolSil('${String(id)}')">
+                        🗑️ Sil
+                    </button>
+
+                </div>
+
+                <div class="record-values">
+
+                    ${
+                        k.total
+                        ?
+                        `<span class="value">
+                            Total:
+                            <strong>${guvenliMetin(k.total)}</strong>
+                        </span>`
+                        :""
+                    }
+
+                    ${
+                        k.ldl
+                        ?
+                        `<span class="value">
+                            LDL:
+                            <strong>${guvenliMetin(k.ldl)}</strong>
+                        </span>`
+                        :""
+                    }
+
+                    ${
+                        k.hdl
+                        ?
+                        `<span class="value">
+                            HDL:
+                            <strong>${guvenliMetin(k.hdl)}</strong>
+                        </span>`
+                        :""
+                    }
+
+                    ${
+                        k.trig
+                        ?
+                        `<span class="value">
+                            Trigliserid:
+                            <strong>${guvenliMetin(k.trig)}</strong>
+                        </span>`
+                        :""
+                    }
+
+                </div>
+            </div>
+            `;
+        }).join("");
+}
+
+function kolesterolSil(id){
+
+    if(!confirm("Bu kolesterol kaydı silinsin mi?"))
+        return;
+
+    let liste=
+        veriOku("saglik_kolesterol");
+
+    liste=liste.filter(
+        k=>String(k.id)!==String(id)
+    );
+
+    veriYaz(
+        "saglik_kolesterol",
+        liste
+    );
+
+    kolesterolListele();
+
+    raporOlustur(
+        window.aktifRaporGunSayisi||7
+    );
+}
+
+/* =========================================================
+   İLAÇ
+========================================================= */
+
+function ilacKaydet(){
+
+    const adi=$("ilacAdi").value.trim();
+    const doz=$("ilacDoz").value.trim();
+    const kullanim=$("ilacKullanim").value.trim();
+    const aciklama=$("ilacAciklama").value.trim();
+
+    if(!adi){
+        alert("Lütfen ilaç adını girin.");
+        return;
+    }
+
+    const liste=
+        veriOku("saglik_ilac");
+
+    liste.push({
+        id:Date.now(),
+        adi:adi,
+        doz:doz,
+        kullanim:kullanim,
+        aciklama:aciklama
+    });
+
+    veriYaz(
+        "saglik_ilac",
+        liste
+    );
+
+    $("ilacAdi").value="";
+    $("ilacDoz").value="";
+    $("ilacKullanim").value="";
+    $("ilacAciklama").value="";
+
+    ilacListele();
+
+    alert("İlaç kaydı kaydedildi.");
+
+    raporOlustur(
+        window.aktifRaporGunSayisi||7
+    );
+}
+
+function ilacListele(){
+
+    const liste=
+        veriOku("saglik_ilac");
+
+    const alan=$("ilacListe");
+
+    if(!liste.length){
+        alan.innerHTML=
+            '<div class="empty">Henüz ilaç kaydı yok.</div>';
+        return;
+    }
+
+    alan.innerHTML=
+        liste.map((k,index)=>{
+
+            const id=k.id??index;
+
+            return `
+            <div class="record">
+
+                <div class="record-head">
+
+                    <strong>
+                        💊
+                        ${guvenliMetin(
+                            k.adi??k.ilac??"-"
+                        )}
+                    </strong>
+
+                    <button
+                        class="delete-btn"
+                        onclick="ilacSil('${String(id)}')">
+                        🗑️ Sil
+                    </button>
+
+                </div>
+
+                <div class="record-values">
+
+                    ${
+                        k.doz
+                        ?
+                        `<span class="value">
+                            Doz: ${guvenliMetin(k.doz)}
+                        </span>`
+                        :""
+                    }
+
+                    ${
+                        k.kullanim
+                        ?
+                        `<span class="value">
+                            ${guvenliMetin(k.kullanim)}
+                        </span>`
+                        :""
+                    }
+
+                    ${
+                        k.aciklama
+                        ?
+                        `<span class="value">
+                            ${guvenliMetin(k.aciklama)}
+                        </span>`
+                        :""
+                    }
+
+                </div>
+            </div>
+            `;
+        }).join("");
+}
+
+function ilacSil(id){
+
+    if(!confirm("Bu ilaç kaydı silinsin mi?"))
+        return;
+
+    let liste=
+        veriOku("saglik_ilac");
+
+    liste=liste.filter(
+        k=>String(k.id)!==String(id)
+    );
+
+    veriYaz(
+        "saglik_ilac",
+        liste
+    );
+
+    ilacListele();
+
+    raporOlustur(
+        window.aktifRaporGunSayisi||7
+    );
+}
+
+/* =========================================================
+   RAPOR TARİHİ
+========================================================= */
+
+function raporBaslangicTarihi(gunSayisi){
+
+    const d=new Date();
+
+    d.setHours(12,0,0,0);
+
+    d.setDate(
+        d.getDate()-(gunSayisi-1)
+    );
+
+    return d.getFullYear()+"-"+
+        ikiHane(d.getMonth()+1)+"-"+
+        ikiHane(d.getDate());
+}
+
+function tarihAralikta(
+    tarih,
+    baslangic,
+    bitis
+){
+
+    if(!tarih)return false;
+
+    const t=
+        String(tarih).substring(0,10);
+
+    return t>=baslangic&&t<=bitis;
+}
+
+/* =========================================================
+   RAPOR
+========================================================= */
+
+function raporOlustur(gunSayisi){
+
+    window.aktifRaporGunSayisi=gunSayisi;
+
+    const baslangic=
+        raporBaslangicTarihi(gunSayisi);
+
+    const bitis=bugunISO();
+
+    if(gunSayisi===7){
+
+        $("btn7").classList.add("active");
+        $("btn30").classList.remove("active");
+
+    }else{
+
+        $("btn7").classList.remove("active");
+        $("btn30").classList.add("active");
+    }
+
+    $("raporAralik").innerHTML=
+        "📅 Tarih aralığı: "+
+        turkTarih(baslangic)+
+        " - "+
+        turkTarih(bitis);
+
+    const tumTansiyon=
+        veriOku("saglik_tansiyon");
+
+    const tumSeker=
+        veriOku("saglik_seker");
+
+    const tumKolesterol=
+        veriOku("saglik_kolesterol");
+
+    const tumIlac=
+        veriOku("saglik_ilac");
+
+    const tansiyon=
+        tumTansiyon.filter(
+            k=>tarihAralikta(
+                k.tarih,
+                baslangic,
+                bitis
+            )
+        );
+
+    const seker=
+        tumSeker.filter(
+            k=>tarihAralikta(
+                k.tarih,
+                baslangic,
+                bitis
+            )
+        );
+
+    const kolesterol=
+        tumKolesterol.filter(
+            k=>tarihAralikta(
+                k.tarih,
+                baslangic,
+                bitis
+            )
+        );
+
+    $("raporTansiyonSayi").textContent=
+        tansiyon.length;
+
+    $("raporSekerSayi").textContent=
+        seker.length;
+
+    $("raporKolesterolSayi").textContent=
+        kolesterol.length;
+
+    /* TANSİYON */
+
+    const buyukler=
+        tansiyon.map(
+            k=>k.buyuk??k.sistolik??k.sis
+        );
+
+    const kucukler=
+        tansiyon.map(
+            k=>k.kucuk??k.diyastolik??k.dia
+        );
+
+    const nabizlar=
+        tansiyon.map(
+            k=>k.nabiz??k.pulse
+        );
+
+    $("ortBuyuk").textContent=
+        formatSayi(ortalama(buyukler));
+
+    $("ortKucuk").textContent=
+        formatSayi(ortalama(kucukler));
+
+    $("ortNabiz").textContent=
+        formatSayi(ortalama(nabizlar));
+
+    $("maxBuyuk").textContent=
+        formatSayi(maksimum(buyukler));
+
+    $("minBuyuk").textContent=
+        formatSayi(minimum(buyukler));
+
+    /* ŞEKER */
+
+    const sekerDegerleri=
+        seker.map(
+            k=>k.deger??k.seker??k.glukoz
+        );
+
+    $("ortSeker").textContent=
+        formatSayi(ortalama(sekerDegerleri));
+
+    $("maxSeker").textContent=
+        formatSayi(maksimum(sekerDegerleri));
+
+    $("minSeker").textContent=
+        formatSayi(minimum(sekerDegerleri));
+
+    /* KOLESTEROL */
+
+    const total=
+        kolesterol.map(
+            k=>k.total??
+               k.totalKolesterol??
+               k.kolesterol
+        );
+
+    const ldl=
+        kolesterol.map(
+            k=>k.ldl??k.LDL
+        );
+
+    const hdl=
+        kolesterol.map(
+            k=>k.hdl??k.HDL
+        );
+
+    const trig=
+        kolesterol.map(
+            k=>k.trig??
+               k.trigliserid??
+               k.trigliserit
+        );
+
+    $("ortTotal").textContent=
+        formatSayi(ortalama(total));
+
+    $("ortLDL").textContent=
+        formatSayi(ortalama(ldl));
+
+    $("ortHDL").textContent=
+        formatSayi(ortalama(hdl));
+
+    $("ortTrig").textContent=
+        formatSayi(ortalama(trig));
+
+    /* SON KAYITLAR */
+
+    const sonKayitlar=[];
+
+    tansiyon.forEach(k=>{
+
+        sonKayitlar.push({
+            tarih:k.tarih,
+            saat:k.saat,
+            html:
+                "❤️ Tansiyon: "+
+                guvenliMetin(
+                    k.buyuk??k.sistolik??"-"
+                )+
+                " / "+
+                guvenliMetin(
+                    k.kucuk??k.diyastolik??"-"
+                )+
+                (
+                    k.nabiz??k.pulse
+                    ?
+                    " • Nabız: "+
+                    guvenliMetin(
+                        k.nabiz??k.pulse
+                    )
+                    :""
+                )
+        });
+
+    });
+
+    seker.forEach(k=>{
+
+        sonKayitlar.push({
+            tarih:k.tarih,
+            saat:k.saat,
+            html:
+                "🩸 Kan şekeri: "+
+                guvenliMetin(
+                    k.deger??k.seker??"-"
+                )+
+                (
+                    k.durum
+                    ?
+                    " • "+
+                    guvenliMetin(k.durum)
+                    :""
+                )
+        });
+
+    });
+
+    kolesterol.forEach(k=>{
+
+        const parcalar=[];
+
+        if(k.total){
+            parcalar.push(
+                "Total: "+
+                guvenliMetin(k.total)
+            );
+        }
+
+        if(k.ldl){
+            parcalar.push(
+                "LDL: "+
+                guvenliMetin(k.ldl)
+            );
+        }
+
+        if(k.hdl){
+            parcalar.push(
+                "HDL: "+
+                guvenliMetin(k.hdl)
+            );
+        }
+
+        if(k.trig){
+            parcalar.push(
+                "Trigliserid: "+
+                guvenliMetin(k.trig)
+            );
+        }
+
+        sonKayitlar.push({
+            tarih:k.tarih,
+            saat:k.saat,
+            html:
+                "🧪 Kolesterol: "+
+                parcalar.join(" • ")
+        });
+
+    });
+
+    sonKayitlar.sort((a,b)=>{
+
+        const aa=
+            String(a.tarih||"")+" "+
+            String(a.saat||"");
+
+        const bb=
+            String(b.tarih||"")+" "+
+            String(b.saat||"");
+
+        return bb.localeCompare(aa);
+    });
+
+    const raporSon=
+        $("raporSonKayitlar");
+
+    if(!sonKayitlar.length){
+
+        raporSon.innerHTML=
+            '<div class="empty">'+
+            'Seçilen dönemde ölçüm kaydı bulunmuyor.'+
+            '</div>';
+
+    }else{
+
+        raporSon.innerHTML=
+            sonKayitlar
+            .slice(0,10)
+            .map(k=>`
+
+                <div class="latest-item">
+
+                    <div class="latest-date">
+                        ${guvenliMetin(turkTarih(k.tarih))}
+                        ${
+                            k.saat
+                            ?
+                            " • "+
+                            guvenliMetin(k.saat)
+                            :""
+                        }
+                    </div>
+
+                    <div>${k.html}</div>
+
+                </div>
+
+            `)
+            .join("");
+    }
+
+    /* İLAÇ */
+
+    const raporIlaclar=
+        $("raporIlaclar");
+
+    if(!tumIlac.length){
+
+        raporIlaclar.innerHTML=
+            '<div class="empty">'+
+            'İlaç kaydı bulunmuyor.'+
+            '</div>';
+
+    }else{
+
+        raporIlaclar.innerHTML=
+            tumIlac.map(k=>`
+
+                <div class="latest-item">
+
+                    <strong>
+                        💊
+                        ${guvenliMetin(
+                            k.adi??k.ilac??"-"
+                        )}
+                    </strong>
+
+                    ${
+                        k.doz
+                        ?
+                        " • "+
+                        guvenliMetin(k.doz)
+                        :""
+                    }
+
+                    ${
+                        k.kullanim
+                        ?
+                        " • "+
+                        guvenliMetin(k.kullanim)
+                        :""
+                    }
+
+                </div>
+
+            `).join("");
+    }
+
+    /* GRAFİKLER */
+
+    cizTansiyonGrafigi(tansiyon);
+    cizSekerGrafigi(seker);
+    cizKolesterolGrafigi(kolesterol);
+}
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+function canvasHazirla(canvas){
+
+    if(!canvas)return null;
+
+    const rect=
+        canvas.getBoundingClientRect();
+
+    const oran=
+        window.devicePixelRatio||1;
+
+    const width=
+        Math.max(
+            300,
+            Math.floor(rect.width)
+        );
+
+    const height=
+        Math.max(
+            220,
+            Math.floor(rect.height)
+        );
+
+    canvas.width=width*oran;
+    canvas.height=height*oran;
+
+    const ctx=
+        canvas.getContext("2d");
+
+    ctx.setTransform(
+        oran,0,0,oran,0,0
+    );
+
+    return{
+        ctx:ctx,
+        width:width,
+        height:height
+    };
+}
+
+function grafikTarih(tarih){
+
+    if(!tarih)return "";
+
+    const p=
+        String(tarih).split("-");
+
+    if(p.length!==3)return tarih;
+
+    return p[2]+"."+p[1];
+}
+
+/* =========================================================
+   ÇİZGİ GRAFİĞİ
+========================================================= */
+
+function cizCizgiGrafigi(
+    canvas,
+    seriler
+){
+
+    const hazir=
+        canvasHazirla(canvas);
+
+    if(!hazir)return;
+
+    const ctx=hazir.ctx;
+    const width=hazir.width;
+    const height=hazir.height;
+
+    ctx.clearRect(
+        0,0,width,height
+    );
+
+    const marginLeft=52;
+    const marginRight=18;
+    const marginTop=32;
+    const marginBottom=45;
+
+    const chartWidth=
+        width-marginLeft-marginRight;
+
+    const chartHeight=
+        height-marginTop-marginBottom;
+
+    let tumDegerler=[];
+
+    seriler.forEach(s=>{
+        s.degerler.forEach(v=>{
+            if(
+                v!==null&&
+                v!==undefined&&
+                Number.isFinite(Number(v))
+            ){
+                tumDegerler.push(Number(v));
+            }
+        });
+    });
+
+    if(!tumDegerler.length){
+
+        ctx.fillStyle="#78909c";
+        ctx.font="14px Arial";
+        ctx.textAlign="center";
+
+        ctx.fillText(
+            "Seçilen dönemde grafik için kayıt yok.",
+            width/2,
+            height/2
+        );
+
+        return;
+    }
+
+    let minDeger=Math.min(...tumDegerler);
+    let maxDeger=Math.max(...tumDegerler);
+
+    if(minDeger===maxDeger){
+
+        minDeger-=10;
+        maxDeger+=10;
+    }
+
+    const fark=maxDeger-minDeger;
+
+    minDeger-=fark*.10;
+    maxDeger+=fark*.10;
+
+    /* IZGARA */
+
+    ctx.strokeStyle="#e0e6eb";
+    ctx.lineWidth=1;
+
+    for(let i=0;i<=4;i++){
+
+        const y=
+            marginTop+
+            chartHeight/4*i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            marginLeft,
+            y
+        );
+
+        ctx.lineTo(
+            width-marginRight,
+            y
+        );
+
+        ctx.stroke();
+
+        const deger=
+            maxDeger-
+            ((maxDeger-minDeger)/4)*i;
+
+        ctx.fillStyle="#607d8b";
+        ctx.font="11px Arial";
+        ctx.textAlign="right";
+
+        ctx.fillText(
+            formatSayi(deger),
+            marginLeft-7,
+            y+4
+        );
+    }
+
+    const uzunluk=
+        Math.max(
+            ...seriler.map(
+                s=>s.tarihler.length
+            )
+        );
+
+    /* X ETİKETLERİ */
+
+    for(let i=0;i<uzunluk;i++){
+
+        const x=
+            uzunluk===1
+            ?
+            marginLeft+chartWidth/2
+            :
+            marginLeft+
+            (i/(uzunluk-1))*chartWidth;
+
+        if(
+            i===0||
+            i===uzunluk-1||
+            i%Math.max(
+                1,
+                Math.ceil(uzunluk/6)
+            )===0
+        ){
+
+            let tarih="";
+
+            for(const seri of seriler){
+
+                if(seri.tarihler[i]){
+                    tarih=seri.tarihler[i];
+                    break;
+                }
+            }
+
+            ctx.fillStyle="#607d8b";
+            ctx.font="10px Arial";
+            ctx.textAlign="center";
+
+            ctx.fillText(
+                grafikTarih(tarih),
+                x,
+                height-17
+            );
+        }
+    }
+
+    /* SERİLER */
+
+    seriler.forEach(seri=>{
+
+        ctx.strokeStyle=seri.cizgi;
+        ctx.lineWidth=2.5;
+        ctx.lineJoin="round";
+        ctx.lineCap="round";
+
+        let onceki=null;
+
+        seri.degerler.forEach(
+            (deger,index)=>{
+
+                if(
+                    deger===null||
+                    deger===undefined||
+                    !Number.isFinite(
+                        Number(deger)
+                    )
+                ){
+                    onceki=null;
+                    return;
+                }
+
+                const x=
+                    uzunluk===1
+                    ?
+                    marginLeft+chartWidth/2
+                    :
+                    marginLeft+
+                    (index/(uzunluk-1))*chartWidth;
+
+                const y=
+                    marginTop+
+                    (
+                        1-
+                        (
+                            Number(deger)-minDeger
+                        )/
+                        (
+                            maxDeger-minDeger
+                        )
+                    )*
+                    chartHeight;
+
+                if(onceki){
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(
+                        onceki.x,
+                        onceki.y
+                    );
+
+                    ctx.lineTo(x,y);
+
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle=seri.cizgi;
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    x,y,4,0,Math.PI*2
+                );
+
+                ctx.fill();
+
+                onceki={
+                    x:x,
+                    y:y
+                };
+            }
+        );
+
+        /* LEGEND */
+
+        const legendY=marginTop-14;
+
+        ctx.fillStyle=seri.cizgi;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            marginLeft+seri.legendX,
+            legendY,
+            4,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+        ctx.fillStyle="#455a64";
+        ctx.font="12px Arial";
+        ctx.textAlign="left";
+
+        ctx.fillText(
+            seri.ad,
+            marginLeft+seri.legendX+9,
+            legendY+4
+        );
+    });
+}
+
+/* =========================================================
+   TANSİYON GRAFİĞİ
+========================================================= */
+
+function cizTansiyonGrafigi(kayitlar){
+
+    const sirali=
+        [...kayitlar].sort((a,b)=>{
+
+            const aa=
+                String(a.tarih||"")+" "+
+                String(a.saat||"");
+
+            const bb=
+                String(b.tarih||"")+" "+
+                String(b.saat||"");
+
+            return aa.localeCompare(bb);
+        });
+
+    const tarihler=
+        sirali.map(k=>k.tarih);
+
+    const buyukler=
+        sirali.map(
+            k=>sayi(
+                k.buyuk??k.sistolik??k.sis
+            )
+        );
+
+    const kucukler=
+        sirali.map(
+            k=>sayi(
+                k.kucuk??k.diyastolik??k.dia
+            )
+        );
+
+    cizCizgiGrafigi(
+        $("tansiyonCanvas"),
+        [
+            {
+                ad:"Büyük",
+                degerler:buyukler,
+                tarihler:tarihler,
+                cizgi:"#1976d2",
+                legendX:0
+            },
+            {
+                ad:"Küçük",
+                degerler:kucukler,
+                tarihler:tarihler,
+                cizgi:"#e53935",
+                legendX:70
+            }
+        ]
+    );
+}
+
+/* =========================================================
+   ŞEKER GRAFİĞİ
+========================================================= */
+
+function cizSekerGrafigi(kayitlar){
+
+    const sirali=
+        [...kayitlar].sort((a,b)=>{
+
+            const aa=
+                String(a.tarih||"")+" "+
+                String(a.saat||"");
+
+            const bb=
+                String(b.tarih||"")+" "+
+                String(b.saat||"");
+
+            return aa.localeCompare(bb);
+        });
+
+    const tarihler=
+        sirali.map(k=>k.tarih);
+
+    const degerler=
+        sirali.map(
+            k=>sayi(
+                k.deger??k.seker??k.glukoz
+            )
+        );
+
+    cizCizgiGrafigi(
+        $("sekerCanvas"),
+        [
+            {
+                ad:"Kan Şekeri",
+                degerler:degerler,
+                tarihler:tarihler,
+                cizgi:"#c62828",
+                legendX:0
+            }
+        ]
+    );
+}
+
+/* =========================================================
+   KOLESTEROL GRAFİĞİ
+========================================================= */
+
+function cizKolesterolGrafigi(kayitlar){
+
+    const sirali=
+        [...kayitlar].sort((a,b)=>{
+
+            const aa=
+                String(a.tarih||"")+" "+
+                String(a.saat||"");
+
+            const bb=
+                String(b.tarih||"")+" "+
+                String(b.saat||"");
+
+            return aa.localeCompare(bb);
+        });
+
+    const tarihler=
+        sirali.map(k=>k.tarih);
+
+    const total=
+        sirali.map(
+            k=>sayi(
+                k.total??
+                k.totalKolesterol??
+                k.kolesterol
+            )
+        );
+
+    const ldl=
+        sirali.map(
+            k=>sayi(k.ldl??k.LDL)
+        );
+
+    const hdl=
+        sirali.map(
+            k=>sayi(k.hdl??k.HDL)
+        );
+
+    cizCizgiGrafigi(
+        $("kolesterolCanvas"),
+        [
+            {
+                ad:"Total",
+                degerler:total,
+                tarihler:tarihler,
+                cizgi:"#2e7d32",
+                legendX:0
+            },
+            {
+                ad:"LDL",
+                degerler:ldl,
+                tarihler:tarihler,
+                cizgi:"#ef6c00",
+                legendX:65
+            },
+            {
+                ad:"HDL",
+                degerler:hdl,
+                tarihler:tarihler,
+                cizgi:"#6a1b9a",
+                legendX:125
+            }
+        ]
+    );
+}
+
+/* =========================================================
+   PDF
+========================================================= */
+
+function pdfRaporOlustur(){
+
+    const gunSayisi =
+        window.aktifRaporGunSayisi || 7;
+
+    const baslangic =
+        raporBaslangicTarihi(gunSayisi);
+
+    const bitis = bugunISO();
+
+    const tumTansiyon =
+        veriOku("saglik_tansiyon");
+
+    const tumSeker =
+        veriOku("saglik_seker");
+
+    const tumKolesterol =
+        veriOku("saglik_kolesterol");
+
+    const tumIlac =
+        veriOku("saglik_ilac");
+
+    const tansiyon =
+        tumTansiyon.filter(k =>
+            tarihAralikta(
+                k.tarih,
+                baslangic,
+                bitis
+            )
+        );
+
+    const seker =
+        tumSeker.filter(k =>
+            tarihAralikta(
+                k.tarih,
+                baslangic,
+                bitis
+            )
+        );
+
+    const kolesterol =
+        tumKolesterol.filter(k =>
+            tarihAralikta(
+                k.tarih,
+                baslangic,
+                bitis
+            )
+        );
+
+    const ort =
+        dizi => formatSayi(
+            ortalama(dizi)
+        );
+
+    const html = `
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Sağlık Raporu</title>
+
+<style>
+
+@page{
+    size:A4;
+    margin:15mm;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:#222;
+    background:white;
+    margin:0;
+    font-size:12px;
+}
+
+.header{
+    border-bottom:3px solid #1976d2;
+    padding-bottom:12px;
+    margin-bottom:18px;
+}
+
+.header h1{
+    margin:0;
+    font-size:22px;
+}
+
+.header p{
+    margin:5px 0 0;
+    color:#666;
+}
+
+.info{
+    background:#f3f7fb;
+    border:1px solid #dce6ef;
+    padding:10px;
+    margin-bottom:18px;
+}
+
+h2{
+    font-size:16px;
+    margin:20px 0 8px;
+    border-bottom:1px solid #ddd;
+    padding-bottom:6px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:15px;
+}
+
+.summary-box{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+.summary-box strong{
+    display:block;
+    font-size:20px;
+    margin-top:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:15px;
+}
+
+th{
+    background:#eeeeee;
+    font-weight:bold;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:7px;
+    text-align:left;
+}
+
+.empty{
+    color:#777;
+    padding:8px 0;
+}
+
+.footer{
+    margin-top:25px;
+    border-top:1px solid #ddd;
+    padding-top:8px;
+    color:#777;
+    font-size:10px;
+}
+
+.page-break{
+    page-break-before:always;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>Sağlık Takip Sistemi</h1>
+
+<p>
+${gunSayisi} Günlük Sağlık Raporu
+</p>
+
+</div>
+
+<div class="info">
+
+<strong>Rapor Dönemi:</strong>
+${turkTarih(baslangic)}
+-
+${turkTarih(bitis)}
+
+<br>
+
+<strong>Rapor Oluşturulma:</strong>
+${turkTarih(bugunISO())}
+${simdiSaat()}
+
+</div>
+
+
+<h2>Genel Özet</h2>
+
+<div class="summary">
+
+<div class="summary-box">
+Tansiyon Kaydı
+<strong>${tansiyon.length}</strong>
+</div>
+
+<div class="summary-box">
+Kan Şekeri Kaydı
+<strong>${seker.length}</strong>
+</div>
+
+<div class="summary-box">
+Kolesterol Kaydı
+<strong>${kolesterol.length}</strong>
+</div>
+
+</div>
+
+
+<h2>❤️ Tansiyon Özeti</h2>
+
+<table>
+
+<tr>
+<th>Ortalama Büyük</th>
+<th>Ortalama Küçük</th>
+<th>Ortalama Nabız</th>
+<th>En Yüksek Büyük</th>
+<th>En Düşük Büyük</th>
+</tr>
+
+<tr>
+
+<td>
+${ort(
+    tansiyon.map(
+        k=>k.buyuk
+    )
+)}
+</td>
+
+<td>
+${ort(
+    tansiyon.map(
+        k=>k.kucuk
+    )
+)}
+</td>
+
+<td>
+${ort(
+    tansiyon.map(
+        k=>k.nabiz
+    )
+)}
+</td>
+
+<td>
+${formatSayi(
+    maksimum(
+        tansiyon.map(
+            k=>k.buyuk
+        )
+    )
+)}
+</td>
+
+<td>
+${formatSayi(
+    minimum(
+        tansiyon.map(
+            k=>k.buyuk
+        )
+    )
+)}
+</td>
+
+</tr>
+
+</table>
+
+
+<h2>❤️ Tansiyon Kayıtları</h2>
+
+${
+tansiyon.length
+?
+`
+<table>
+
+<tr>
+<th>Tarih</th>
+<th>Saat</th>
+<th>Büyük</th>
+<th>Küçük</th>
+<th>Nabız</th>
+</tr>
+
+${
+tansiyon
+.sort((a,b)=>
+    (
+        String(a.tarih)+" "+
+        String(a.saat||"")
+    ).localeCompare(
+        String(b.tarih)+" "+
+        String(b.saat||"")
+    )
+)
+.map(k=>`
+
+<tr>
+
+<td>${guvenliMetin(
+    turkTarih(k.tarih)
+)}</td>
+
+<td>${guvenliMetin(
+    k.saat||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.buyuk||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.kucuk||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.nabiz||"-"
+)}</td>
+
+</tr>
+
+`).join("")
+}
+
+</table>
+`
+:
+`<div class="empty">
+Bu dönemde tansiyon kaydı bulunmuyor.
+</div>`
+}
+
+
+<h2>🩸 Kan Şekeri Özeti</h2>
+
+<table>
+
+<tr>
+<th>Ortalama</th>
+<th>En Yüksek</th>
+<th>En Düşük</th>
+</tr>
+
+<tr>
+
+<td>
+${ort(
+    seker.map(
+        k=>k.deger
+    )
+)}
+</td>
+
+<td>
+${formatSayi(
+    maksimum(
+        seker.map(
+            k=>k.deger
+        )
+    )
+)}
+</td>
+
+<td>
+${formatSayi(
+    minimum(
+        seker.map(
+            k=>k.deger
+        )
+    )
+)}
+</td>
+
+</tr>
+
+</table>
+
+
+<h2>🩸 Kan Şekeri Kayıtları</h2>
+
+${
+seker.length
+?
+`
+<table>
+
+<tr>
+<th>Tarih</th>
+<th>Saat</th>
+<th>Değer</th>
+<th>Durum</th>
+</tr>
+
+${
+seker
+.sort((a,b)=>
+    (
+        String(a.tarih)+" "+
+        String(a.saat||"")
+    ).localeCompare(
+        String(b.tarih)+" "+
+        String(b.saat||"")
+    )
+)
+.map(k=>`
+
+<tr>
+
+<td>${guvenliMetin(
+    turkTarih(k.tarih)
+)}</td>
+
+<td>${guvenliMetin(
+    k.saat||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.deger||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.durum||"-"
+)}</td>
+
+</tr>
+
+`).join("")
+}
+
+</table>
+`
+:
+`<div class="empty">
+Bu dönemde kan şekeri kaydı bulunmuyor.
+</div>`
+}
+
+
+<h2>🧪 Kolesterol Özeti</h2>
+
+<table>
+
+<tr>
+<th>Ortalama Total</th>
+<th>Ortalama LDL</th>
+<th>Ortalama HDL</th>
+<th>Ortalama Trigliserid</th>
+</tr>
+
+<tr>
+
+<td>
+${ort(
+    kolesterol.map(
+        k=>k.total
+    )
+)}
+</td>
+
+<td>
+${ort(
+    kolesterol.map(
+        k=>k.ldl
+    )
+)}
+</td>
+
+<td>
+${ort(
+    kolesterol.map(
+        k=>k.hdl
+    )
+)}
+</td>
+
+<td>
+${ort(
+    kolesterol.map(
+        k=>k.trig
+    )
+)}
+</td>
+
+</tr>
+
+</table>
+
+
+<h2>🧪 Kolesterol Kayıtları</h2>
+
+${
+kolesterol.length
+?
+`
+<table>
+
+<tr>
+<th>Tarih</th>
+<th>Saat</th>
+<th>Total</th>
+<th>LDL</th>
+<th>HDL</th>
+<th>Trigliserid</th>
+</tr>
+
+${
+kolesterol
+.sort((a,b)=>
+    (
+        String(a.tarih)+" "+
+        String(a.saat||"")
+    ).localeCompare(
+        String(b.tarih)+" "+
+        String(b.saat||"")
+    )
+)
+.map(k=>`
+
+<tr>
+
+<td>${guvenliMetin(
+    turkTarih(k.tarih)
+)}</td>
+
+<td>${guvenliMetin(
+    k.saat||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.total||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.ldl||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.hdl||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.trig||"-"
+)}</td>
+
+</tr>
+
+`).join("")
+}
+
+</table>
+`
+:
+`<div class="empty">
+Bu dönemde kolesterol kaydı bulunmuyor.
+</div>`
+}
+
+
+<h2 class="page-break">
+💊 İlaç Listesi
+</h2>
+
+${
+tumIlac.length
+?
+`
+<table>
+
+<tr>
+<th>İlaç</th>
+<th>Doz</th>
+<th>Kullanım</th>
+<th>Açıklama</th>
+</tr>
+
+${
+tumIlac.map(k=>`
+
+<tr>
+
+<td>${guvenliMetin(
+    k.adi||k.ilac||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.doz||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.kullanim||"-"
+)}</td>
+
+<td>${guvenliMetin(
+    k.aciklama||"-"
+)}</td>
+
+</tr>
+
+`).join("")
+}
+
+</table>
+`
+:
+`<div class="empty">
+İlaç kaydı bulunmuyor.
+</div>`
+}
+
+
+<div class="footer">
+
+Bu rapor, Sağlık Takip Sistemi tarafından
+kayıtlı veriler kullanılarak oluşturulmuştur.
+<br>
+Tıbbi tanı veya tedavi değerlendirmesi değildir.
+
+</div>
+
+<script>
+
+window.onload=function(){
+
+    setTimeout(function(){
+        window.focus();
+        window.print();
+    },400);
+
+};
+
+<\/script>
+
+</body>
+
+</html>
+`;
+
+    const pencere=
+        window.open(
+            "",
+            "_blank",
+            "width=900,height=900"
+        );
+
+    if(!pencere){
+
+        alert(
+            "PDF raporu açılamadı. "+
+            "Tarayıcınızın açılır pencere iznini kontrol edin."
+        );
+
+        return;
+    }
+
+    pencere.document.open();
+
+    pencere.document.write(html);
+
+    pencere.document.close();
+}
+
+/* =========================================================
+   PENCERE BOYUTU
+========================================================= */
+
+let yenidenCizTimer=null;
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        clearTimeout(
+            yenidenCizTimer
+        );
+
+        yenidenCizTimer=
+            setTimeout(()=>{
+
+                const rapor=$("rapor");
+
+                if(
+                    rapor &&
+                    rapor.classList.contains("active")
+                ){
+                    raporOlustur(
+                        window.aktifRaporGunSayisi||7
+                    );
+                }
+
+            },250);
+    }
+);
+
+/* =========================================================
+   BAŞLANGIÇ
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        window.aktifRaporGunSayisi=7;
+
+        tarihSaatleriAyarla();
+
+        tansiyonListele();
+        sekerListele();
+        kolesterolListele();
+        ilacListele();
+
+        raporOlustur(7);
+    }
+);
+
+</script>
+
+</body>
+</html>

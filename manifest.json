@@ -1,0 +1,11 @@
+{
+    "name": "Sağlık Takip",
+    "short_name": "Sağlık Takip",
+    "description": "Sağlık Takip V2.3",
+    "start_url": "./saglik_takip_v2_3.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1976d2",
+    "orientation": "portrait",
+    "lang": "tr"
+}
