@@ -3401,7 +3401,6 @@ tumIlac.map(k=>`
 </div>`
 }
 
-
 <div class="footer">
 
 Bu rapor, Sağlık Takip Sistemi tarafından
@@ -3411,14 +3410,45 @@ Tıbbi tanı veya tedavi değerlendirmesi değildir.
 
 </div>
 
+<div class="geri-panel">
+
+<button onclick="window.close(); setTimeout(function(){ history.back(); },300);">
+← Rapor Ekranına Dön
+</button>
+
+</div>
+
+<style>
+
+.geri-panel{
+    text-align:center;
+    margin-top:25px;
+    padding:15px;
+}
+
+.geri-panel button{
+    background:#1976d2;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:12px 25px;
+    font-size:15px;
+    cursor:pointer;
+}
+
+@media print{
+    .geri-panel{
+        display:none !important;
+    }
+}
+
+</style>
+
 <script>
 
 window.onload=function(){
 
-    setTimeout(function(){
-        window.focus();
-        window.print();
-    },400);
+    window.focus();
 
 };
 
