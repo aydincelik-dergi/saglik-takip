@@ -3412,6 +3412,10 @@ Tıbbi tanı veya tedavi değerlendirmesi değildir.
 
 <div class="geri-panel">
 
+<button onclick="window.print();">
+📄 PDF Yazdır
+</button>
+
 <button onclick="window.close(); setTimeout(function(){ history.back(); },300);">
 ← Rapor Ekranına Dön
 </button>
@@ -3432,6 +3436,7 @@ Tıbbi tanı veya tedavi değerlendirmesi değildir.
     border:none;
     border-radius:8px;
     padding:12px 25px;
+    margin:5px;
     font-size:15px;
     cursor:pointer;
 }
@@ -3453,11 +3458,9 @@ window.onload=function(){
 };
 
 <\/script>
-
 </body>
 
-</html>
-`;
+</html>`;
 
     const pencere=
         window.open(
