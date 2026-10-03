@@ -518,6 +518,23 @@ button{cursor:pointer}
         padding:0;
     }
 }
+.logo-baslik {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.logo-baslik img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+.logo-baslik h1 {
+    margin: 0;
+}
+
 </style>
 
 </head>
@@ -2837,6 +2854,8 @@ function pdfRaporOlustur(){
 
 <head>
 
+<link rel="icon" type="image/png" href="aykas_logo.png">
+
 <meta charset="UTF-8">
 
 <title>Sağlık Raporu</title>
@@ -2951,7 +2970,10 @@ th,td{
 
 <div class="header">
 
-<h1>Sağlık Takip Sistemi</h1>
+<div class="logo-baslik">
+    <img src="aykas_logo.png" alt="AYKAS Logo">
+    <h1>Sağlık Takip Sistemi</h1>
+</div>
 
 <p>
 ${gunSayisi} Günlük Sağlık Raporu
