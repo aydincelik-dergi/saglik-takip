@@ -3416,10 +3416,9 @@ Tıbbi tanı veya tedavi değerlendirmesi değildir.
 📄 PDF Yazdır
 </button>
 
-<button onclick="window.close(); setTimeout(function(){ history.back(); },300);">
+<button onclick="if(window.opener && !window.opener.closed){window.opener.focus(); window.close();}else{history.back();}">
 ← Rapor Ekranına Dön
 </button>
-
 </div>
 
 <style>
